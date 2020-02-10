@@ -1,6 +1,3 @@
-let playerTurn = true;
-let gameContainer = document.querySelector("#game-container");
-
 // create factory of players
 const Player = (name, symbol) => {
     const getName = () => name;
@@ -20,6 +17,7 @@ const Player = (name, symbol) => {
 
 
 const gameBoard = (() => {
+    
     const board = [];
 
     for (let i = 0; i < 9; i++) {
@@ -43,9 +41,6 @@ const gameBoard = (() => {
         let arr2 = [];
         let arr3 = [];
 
-        let diag1 = [];
-        let diag2 = [];
-
         for (let i = 0; i < 3; i++) {
 
             arr1.push(checkArr[`row${i}`][0]);
@@ -59,7 +54,7 @@ const gameBoard = (() => {
 
         checkArr["diagonal1"] = [arr1[0], arr2[1], arr3[2]];
         checkArr["diagonal2"] = [arr1[2], arr2[1], arr3[0]];
-        
+
         let check;
 
         // check for same val in all 3 indexes
@@ -79,7 +74,9 @@ const gameBoard = (() => {
 // displayController module
 const displayController = (() => {
 
+    let gameContainer = document.querySelector("#game-container");
     let board = gameBoard.board;
+    let playerTurn = true;
 
     for (let i = 0; i < board.length; i++) {
         let newCell = document.createElement("div");
@@ -92,7 +89,7 @@ const displayController = (() => {
 
     let grid = document.querySelectorAll(".grid-cell");
 
-    // furn functionality
+    // turn functionality
     grid.forEach(cell => cell.addEventListener('click', () => {
         cell.innerHTML = playerTurn ? playerOne.turn() : playerTwo.turn();
         let cellIndex = cell.id.split("-")[1];
