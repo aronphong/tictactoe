@@ -6,11 +6,11 @@
     justify-content: space-around;
     flex-flow: row wrap;
     margin: 0 auto;
-    text-align: center;
 }
 
 .grid-cell {
     background-color: salmon;
+    font-size: 5.5em;
     border-style: solid;
     border-width: 1px;
     padding: 5px 5px 5px 5px;
