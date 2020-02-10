@@ -1,8 +1,5 @@
-
-
 let playerTurn = true;
 let gameContainer = document.querySelector("#game-container");
-// let gameCell = document.querySelectorAll(".")
 
 // create factory of players
 const Player = (name, symbol) => {
@@ -22,19 +19,12 @@ const Player = (name, symbol) => {
 };
 
 
-// create gameboard and displaycontroller modules
-// when user choose cell, push symbol into specific array
 const gameBoard = (() => {
     const board = [];
 
     for (let i = 0; i < 9; i++) {
         board[i] = i
     }
-
-    // have another function find out which symbol to put into cell
-    // console.log(grid);
-    // have function add event listener for each grid cell
-
 
 
     // if X or O is 3 in a row or diagonal is a win
@@ -53,17 +43,23 @@ const gameBoard = (() => {
         let arr2 = [];
         let arr3 = [];
 
+        let diag1 = [];
+        let diag2 = [];
+
         for (let i = 0; i < 3; i++) {
 
             arr1.push(checkArr[`row${i}`][0]);
             arr2.push(checkArr[`row${i}`][1]);
             arr3.push(checkArr[`row${i}`][2]);
         }
-
+        
         checkArr[`column0`] = arr1;
         checkArr[`column1`] = arr2;
         checkArr[`column2`] = arr3;
 
+        checkArr["diagonal1"] = [arr1[0], arr2[1], arr3[2]];
+        checkArr["diagonal2"] = [arr1[2], arr2[1], arr3[0]];
+        
         let check;
 
         // check for same val in all 3 indexes
@@ -92,11 +88,11 @@ const displayController = (() => {
         newCell.innerHTML = board[i];
 
         gameContainer.appendChild(newCell);
-
     }
 
     let grid = document.querySelectorAll(".grid-cell");
 
+    // furn functionality
     grid.forEach(cell => cell.addEventListener('click', () => {
         cell.innerHTML = playerTurn ? playerOne.turn() : playerTwo.turn();
         let cellIndex = cell.id.split("-")[1];
@@ -106,9 +102,6 @@ const displayController = (() => {
     }));
 
 })();
-
-
-
 
 const playerOne = Player("p1", "X");
 const playerTwo = Player("p2", "O");
