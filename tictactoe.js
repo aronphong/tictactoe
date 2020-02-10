@@ -1,7 +1,8 @@
 
-let grid = document.querySelectorAll(".grid-cell");
+
 let playerTurn = true;
 let gameContainer = document.querySelector("#game-container");
+// let gameCell = document.querySelectorAll(".")
 
 // create factory of players
 const Player = (name, symbol) => {
@@ -31,15 +32,9 @@ const gameBoard = (() => {
     }
 
     // have another function find out which symbol to put into cell
-
+    // console.log(grid);
     // have function add event listener for each grid cell
-    grid.forEach(cell => cell.addEventListener('click', () => {
-        cell.innerHTML = playerTurn ? playerOne.turn() : playerTwo.turn();
-        let cellIndex = cell.id.split("-")[1];
-        board[cellIndex] = cell.innerHTML;
-        playerTurn = !playerTurn;
-        checkWin();
-    }));
+
 
 
     // if X or O is 3 in a row or diagonal is a win
@@ -81,7 +76,7 @@ const gameBoard = (() => {
             }
         }
     }
-    return {board};
+    return {board, checkWin};
 })();
 
 
@@ -99,7 +94,20 @@ const displayController = (() => {
         gameContainer.appendChild(newCell);
 
     }
+
+    let grid = document.querySelectorAll(".grid-cell");
+
+    grid.forEach(cell => cell.addEventListener('click', () => {
+        cell.innerHTML = playerTurn ? playerOne.turn() : playerTwo.turn();
+        let cellIndex = cell.id.split("-")[1];
+        board[cellIndex] = cell.innerHTML;
+        playerTurn = !playerTurn;
+        gameBoard.checkWin();
+    }));
+
 })();
+
+
 
 
 const playerOne = Player("p1", "X");
