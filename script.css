@@ -1,0 +1,21 @@
+#game-container {
+    width: 400px;
+    height: 400px;
+    background-color: grey;
+    display: flex;
+    justify-content: space-around;
+    flex-flow: row wrap;
+    margin: auto;
+    text-align: center;
+}
+
+.grid-cell {
+    background-color: salmon;
+    border-style: solid;
+    border-width: 1px;
+    padding: 5px 5px 5px 5px;
+    flex: 115px 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

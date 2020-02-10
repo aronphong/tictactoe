@@ -1,7 +1,7 @@
 
 let grid = document.querySelectorAll(".grid-cell");
 let playerTurn = true;
-
+let gameContainer = document.querySelector("#game-container");
 
 // create factory of players
 const Player = (name, symbol) => {
@@ -13,7 +13,8 @@ const Player = (name, symbol) => {
     }
 
     const win = () => {
-        alert(`${name} Wins!`);
+        // alert(`${name} Wins!`);
+        console.log(`${name} Wins!`);
     }
 
     return {getName, getSymbol, turn, win}
@@ -28,7 +29,6 @@ const gameBoard = (() => {
     for (let i = 0; i < 9; i++) {
         board[i] = i
     }
-
 
     // have another function find out which symbol to put into cell
 
@@ -88,6 +88,17 @@ const gameBoard = (() => {
 // displayController module
 const displayController = (() => {
 
+    let board = gameBoard.board;
+
+    for (let i = 0; i < board.length; i++) {
+        let newCell = document.createElement("div");
+        newCell.className = "grid-cell";
+        newCell.id = `cell-${i}`;
+        newCell.innerHTML = board[i];
+
+        gameContainer.appendChild(newCell);
+
+    }
 })();
 
 
