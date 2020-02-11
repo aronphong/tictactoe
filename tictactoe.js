@@ -20,10 +20,29 @@ const gameBoard = (() => {
     
     const board = [];
 
+
+    let gameContainer = document.querySelector("#game-container");
+
     for (let i = 0; i < 9; i++) {
-        board[i] = i
+        board[i] = " ";
     }
 
+    for (let i = 0; i < board.length; i++) {
+        let newCell = document.createElement("div");
+        newCell.className = "grid-cell";
+        newCell.id = `cell-${i}`;
+        newCell.innerHTML = board[i];
+
+        gameContainer.appendChild(newCell);
+    }
+
+    const resetBoard = () => {
+
+        for (let i = 0; i < board.length; i++) {
+            let cell = document.getElementById(`cell-${i}`);
+            cell.innerHTML = " ";
+        }
+    }
 
     // if X or O is 3 in a row or diagonal is a win
     const checkWin = () => {
@@ -64,6 +83,7 @@ const gameBoard = (() => {
 
             if (check == "X" || check == "O") {
                 playerOne.getSymbol() == check ? playerOne.win() : playerTwo.win();
+                resetBoard();
             }
         }
     }
@@ -77,15 +97,6 @@ const displayController = (() => {
     let gameContainer = document.querySelector("#game-container");
     let board = gameBoard.board;
     let playerTurn = true;
-
-    for (let i = 0; i < board.length; i++) {
-        let newCell = document.createElement("div");
-        newCell.className = "grid-cell";
-        newCell.id = `cell-${i}`;
-        newCell.innerHTML = board[i];
-
-        gameContainer.appendChild(newCell);
-    }
 
     let grid = document.querySelectorAll(".grid-cell");
 
