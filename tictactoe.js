@@ -44,42 +44,42 @@ const gameBoard = (() => {
         }
     }
 
-    // if X or O is 3 in a row or diagonal is a win
-    const checkWin = () => {
+
+    const boardPositions = () => {
 
         let rowCount = 0;
-        const checkArr = {};
+        const currentBoard = {};
 
         for (let i = 0; i < 9; i += 3) {
 
-            checkArr[`row${rowCount}`] = board.slice(i, i+3);
+            currentBoard[`row${rowCount}`] = board.slice(i, i+3);
             rowCount++;
         }
 
-        let arr1 = [];
-        let arr2 = [];
-        let arr3 = [];
-
         for (let i = 0; i < 3; i++) {
 
-            arr1.push(checkArr[`row${i}`][0]);
-            arr2.push(checkArr[`row${i}`][1]);
-            arr3.push(checkArr[`row${i}`][2]);
+            currentBoard[`column${i}`] = [];
+            for (let j = 0; j < 3; j++) {
+                currentBoard[`column${i}`].push(currentBoard[`row${j}`][i]);
+            }
         }
         
-        checkArr[`column0`] = arr1;
-        checkArr[`column1`] = arr2;
-        checkArr[`column2`] = arr3;
+        currentBoard["diagonal0"] = [currentBoard["row0"][0], currentBoard["row1"][1], currentBoard["row2"][2]];
+        currentBoard["diagonal1"] = [currentBoard["row0"][2], currentBoard["row1"][1], currentBoard["row2"][0]];
+        return currentBoard;
+    }
 
-        checkArr["diagonal1"] = [arr1[0], arr2[1], arr3[2]];
-        checkArr["diagonal2"] = [arr1[2], arr2[1], arr3[0]];
+    // if X or O is 3 in a row or diagonal is a win
+    const checkWin = () => {
+
+        let currentBoard = boardPositions();
 
         let check;
 
         // check for same val in all 3 indexes
-        for (arr in checkArr) {
+        for (arr in currentBoard) {
 
-            check = checkArr[arr].reduce((a,b) => a === b ? a : false);
+            check = currentBoard[arr].reduce((a,b) => a === b ? a : false);
 
             if (check == "X" || check == "O") {
                 playerOne.getSymbol() == check ? playerOne.win() : playerTwo.win();
@@ -109,6 +109,7 @@ const displayController = (() => {
         gameBoard.checkWin();
     }));
 
+    // display winner in HTML
 })();
 
 const playerOne = Player("p1", "X");
