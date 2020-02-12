@@ -17,16 +17,16 @@ const Player = (name, symbol) => {
 
 
 const gameBoard = (() => {
-    
-    const board = [];
-
 
     let gameContainer = document.querySelector("#game-container");
+    const board = [];
 
+    // create board array
     for (let i = 0; i < 9; i++) {
         board[i] = "";
     }
 
+    // render board 
     for (let i = 0; i < board.length; i++) {
         let newCell = document.createElement("div");
         newCell.className = "grid-cell";
@@ -77,14 +77,16 @@ const gameBoard = (() => {
         let currentBoard = boardPositions();
         let check;
 
-        // check for same val in all 3 indexes
+        // check for same symbol in all 3 indexes
         for (arr in currentBoard) {
 
             check = currentBoard[arr].reduce((a,b) => a === b ? a : false);
 
             if (check == "X" || check == "O") {
                 playerOne.getSymbol() == check ? playerOne.win() : playerTwo.win();
+                displayController.rm();
                 displayController.displayWinner(check);
+
                 // resetBoard();
                 return check;
             }
@@ -110,27 +112,34 @@ const displayController = (() => {
         let winnerDisplay = document.querySelector("#winner-display");
         winnerDisplay.textContent = winnerSymbol + " is the Winner!";
 
-    }
+    };
 
-    const displayMove = (cell) => {
-        if (cell.textContent == "") {
-            cell.textContent = playerTurn ? playerOne.turn() : playerTwo.turn();
-            let cellIndex = cell.id.split("-")[1];
-            board[cellIndex] = cell.textContent;
+
+    const displayMove = () => {
+
+        const currentCell = event.target;
+
+        if (currentCell.textContent == "") {
+
+            currentCell.textContent = playerTurn ? playerOne.turn() : playerTwo.turn();
+            let cellIndex = currentCell.id.split("-")[1];
+            board[cellIndex] = currentCell.textContent;
+            playerTurn = !playerTurn;
+            gameBoard.checkWin();
         }
         else {
-            return 
+            return
         }
-    }
+    };
 
     // turn functionality
-    grid.forEach(cell => cell.addEventListener('click', () => {
-        displayMove(cell);
-        playerTurn = !playerTurn;
-        gameWin = gameBoard.checkWin();
-    }));
+    grid.forEach(cell => cell.addEventListener('click', displayMove));
 
-    return {displayWinner};
+    const rm = () => {
+        grid.forEach(cell => cell.removeEventListener('click', displayMove));
+    };
+
+    return {displayWinner, rm};
 })();
 
 const playerOne = Player("p1", "X");
