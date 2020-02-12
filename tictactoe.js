@@ -24,14 +24,14 @@ const gameBoard = (() => {
     let gameContainer = document.querySelector("#game-container");
 
     for (let i = 0; i < 9; i++) {
-        board[i] = " ";
+        board[i] = "";
     }
 
     for (let i = 0; i < board.length; i++) {
         let newCell = document.createElement("div");
         newCell.className = "grid-cell";
         newCell.id = `cell-${i}`;
-        newCell.innerHTML = board[i];
+        newCell.textContent = board[i];
 
         gameContainer.appendChild(newCell);
     }
@@ -40,7 +40,7 @@ const gameBoard = (() => {
 
         for (let i = 0; i < board.length; i++) {
             let cell = document.getElementById(`cell-${i}`);
-            cell.innerHTML = " ";
+            cell.textContent = "";
         }
     }
 
@@ -59,6 +59,7 @@ const gameBoard = (() => {
         for (let i = 0; i < 3; i++) {
 
             currentBoard[`column${i}`] = [];
+
             for (let j = 0; j < 3; j++) {
                 currentBoard[`column${i}`].push(currentBoard[`row${j}`][i]);
             }
@@ -66,6 +67,7 @@ const gameBoard = (() => {
         
         currentBoard["diagonal0"] = [currentBoard["row0"][0], currentBoard["row1"][1], currentBoard["row2"][2]];
         currentBoard["diagonal1"] = [currentBoard["row0"][2], currentBoard["row1"][1], currentBoard["row2"][0]];
+
         return currentBoard;
     }
 
@@ -73,7 +75,6 @@ const gameBoard = (() => {
     const checkWin = () => {
 
         let currentBoard = boardPositions();
-
         let check;
 
         // check for same val in all 3 indexes
@@ -83,7 +84,9 @@ const gameBoard = (() => {
 
             if (check == "X" || check == "O") {
                 playerOne.getSymbol() == check ? playerOne.win() : playerTwo.win();
-                resetBoard();
+                displayController.displayWinner(check);
+                // resetBoard();
+                return check;
             }
         }
     }
@@ -95,21 +98,39 @@ const gameBoard = (() => {
 const displayController = (() => {
 
     let gameContainer = document.querySelector("#game-container");
+
+    let gameWin;
     let board = gameBoard.board;
     let playerTurn = true;
 
     let grid = document.querySelectorAll(".grid-cell");
 
+    const displayWinner = (winnerSymbol) => {
+
+        let winnerDisplay = document.querySelector("#winner-display");
+        winnerDisplay.textContent = winnerSymbol + " is the Winner!";
+
+    }
+
+    const displayMove = (cell) => {
+        if (cell.textContent == "") {
+            cell.textContent = playerTurn ? playerOne.turn() : playerTwo.turn();
+            let cellIndex = cell.id.split("-")[1];
+            board[cellIndex] = cell.textContent;
+        }
+        else {
+            return 
+        }
+    }
+
     // turn functionality
     grid.forEach(cell => cell.addEventListener('click', () => {
-        cell.innerHTML = playerTurn ? playerOne.turn() : playerTwo.turn();
-        let cellIndex = cell.id.split("-")[1];
-        board[cellIndex] = cell.innerHTML;
+        displayMove(cell);
         playerTurn = !playerTurn;
-        gameBoard.checkWin();
+        gameWin = gameBoard.checkWin();
     }));
 
-    // display winner in HTML
+    return {displayWinner};
 })();
 
 const playerOne = Player("p1", "X");
