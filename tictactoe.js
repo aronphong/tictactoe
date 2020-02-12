@@ -84,7 +84,7 @@ const gameBoard = (() => {
 
             if (check == "X" || check == "O") {
                 playerOne.getSymbol() == check ? playerOne.win() : playerTwo.win();
-                displayController.rm();
+                displayController.removeMoves();
                 displayController.displayWinner(check);
 
                 // resetBoard();
@@ -99,9 +99,6 @@ const gameBoard = (() => {
 // displayController module
 const displayController = (() => {
 
-    let gameContainer = document.querySelector("#game-container");
-
-    let gameWin;
     let board = gameBoard.board;
     let playerTurn = true;
 
@@ -135,11 +132,11 @@ const displayController = (() => {
     // turn functionality
     grid.forEach(cell => cell.addEventListener('click', displayMove));
 
-    const rm = () => {
+    const removeMoves = () => {
         grid.forEach(cell => cell.removeEventListener('click', displayMove));
     };
 
-    return {displayWinner, rm};
+    return {displayWinner, removeMoves};
 })();
 
 const playerOne = Player("p1", "X");
