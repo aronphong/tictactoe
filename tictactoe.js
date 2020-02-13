@@ -88,6 +88,15 @@ const gameBoard = (() => {
         let currentBoard = boardPositions();
         let check;
 
+        let tie = board.every((item) => (item == "X") || (item == "O"));
+
+        if (tie) {
+            displayController.removeMoves();
+            displayController.displayWinner(tie);
+            return tie;
+        }
+
+
         // check for same symbol in all 3 indexes
         for (arr in currentBoard) {
 
@@ -98,11 +107,11 @@ const gameBoard = (() => {
                 displayController.removeMoves();
                 displayController.displayWinner(check);
 
-                // resetBoard();
                 return check;
             }
         }
-    }
+    };
+
     return {board, resetBoard, checkWin};
 })();
 
@@ -119,8 +128,13 @@ const displayController = (() => {
     const displayWinner = (winnerSymbol) => {
 
         let winnerDisplay = document.querySelector("#winner-display");
-        winnerDisplay.textContent = winnerSymbol + " is the Winner!";
 
+        if (winnerSymbol == true) {
+            winnerDisplay.textContent = "Tie Game!";
+        }
+        else {
+            winnerDisplay.textContent = winnerSymbol + " is the Winner!";
+        }
     };
 
 
@@ -149,8 +163,9 @@ const displayController = (() => {
     // turn functionality
     const addMoves = () => {grid.forEach(cell => cell.addEventListener('click', displayMove));
     };
+
     addMoves();
-    
+
     const removeMoves = () => {
         grid.forEach(cell => cell.removeEventListener('click', displayMove));
     };
