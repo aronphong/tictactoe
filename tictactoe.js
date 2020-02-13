@@ -28,6 +28,7 @@ const gameBoard = (() => {
 
     // render board 
     for (let i = 0; i < board.length; i++) {
+
         let newCell = document.createElement("div");
         newCell.className = "grid-cell";
         newCell.id = `cell-${i}`;
@@ -38,11 +39,19 @@ const gameBoard = (() => {
 
     const resetBoard = () => {
 
+        let winnerDisplay = document.querySelector("#winner-display");
+        winnerDisplay.textContent = "";
+
         for (let i = 0; i < board.length; i++) {
+
+            board[i] = "";
+
             let cell = document.getElementById(`cell-${i}`);
-            cell.textContent = "";
-        }
-    }
+            cell.textContent = board[i];
+        };
+
+        displayController.addMoves();
+    };
 
 
     const boardPositions = () => {
@@ -50,12 +59,14 @@ const gameBoard = (() => {
         let rowCount = 0;
         const currentBoard = {};
 
+        // get row positions
         for (let i = 0; i < 9; i += 3) {
 
             currentBoard[`row${rowCount}`] = board.slice(i, i+3);
             rowCount++;
         }
 
+        // get column positions from rows
         for (let i = 0; i < 3; i++) {
 
             currentBoard[`column${i}`] = [];
@@ -92,7 +103,7 @@ const gameBoard = (() => {
             }
         }
     }
-    return {board, checkWin};
+    return {board, resetBoard, checkWin};
 })();
 
 
@@ -103,6 +114,7 @@ const displayController = (() => {
     let playerTurn = true;
 
     let grid = document.querySelectorAll(".grid-cell");
+    let resetButton = document.querySelector("#reset-button");
 
     const displayWinner = (winnerSymbol) => {
 
@@ -129,14 +141,21 @@ const displayController = (() => {
         }
     };
 
-    // turn functionality
-    grid.forEach(cell => cell.addEventListener('click', displayMove));
 
+    resetButton.addEventListener('click', () => {
+        gameBoard.resetBoard();
+    });
+
+    // turn functionality
+    const addMoves = () => {grid.forEach(cell => cell.addEventListener('click', displayMove));
+    };
+    addMoves();
+    
     const removeMoves = () => {
         grid.forEach(cell => cell.removeEventListener('click', displayMove));
     };
 
-    return {displayWinner, removeMoves};
+    return {displayWinner, addMoves, removeMoves};
 })();
 
 const playerOne = Player("p1", "X");
