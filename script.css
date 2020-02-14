@@ -1,20 +1,22 @@
 #game-container {
     width: 400px;
-    height: 400px;
-    background-color: grey;
+    min-height: 300px;
     display: flex;
-    justify-content: space-around;
-    flex-flow: row wrap;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
     margin: 0 auto;
 }
 
 .grid-cell {
+    width: 32%;
+    min-width: 0%;
+    min-height: 100px;
     background-color: salmon;
-    font-size: 5.5em;
+    font-size: 2.5em;
     border-style: solid;
     border-width: 1px;
-    padding: 5px 5px 5px 5px;
-    flex: 115px 1;
+    flex: 1 0 100px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -22,4 +24,21 @@
 
 #title {
     text-align: center;
+}
+
+#winner-display {
+    height: 50px;
+    font-size: 2.5em;
+    text-align: center;
+}
+
+#reset-display {
+    margin: 0 auto;
+    padding: 10px;
+    text-align: center;
+
+}
+
+#reset-button {
+    border-radius: 2px;
 }
