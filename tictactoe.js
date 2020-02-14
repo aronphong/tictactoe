@@ -88,15 +88,6 @@ const gameBoard = (() => {
         let currentBoard = boardPositions();
         let check;
 
-        let tie = board.every((item) => (item == "X") || (item == "O"));
-
-        if (tie) {
-            displayController.removeMoves();
-            displayController.displayWinner(tie);
-            return tie;
-        }
-
-
         // check for same symbol in all 3 indexes
         for (arr in currentBoard) {
 
@@ -112,7 +103,18 @@ const gameBoard = (() => {
         }
     };
 
-    return {board, resetBoard, checkWin};
+    const checkTie = () => {
+
+        let tie = board.every((item) => (item == "X") || (item == "O"));
+
+        if (tie) {
+            displayController.removeMoves();
+            displayController.displayWinner(tie);
+            return tie;
+        }
+    };
+
+    return {board, resetBoard, checkWin, checkTie};
 })();
 
 
@@ -149,6 +151,7 @@ const displayController = (() => {
             board[cellIndex] = currentCell.textContent;
             playerTurn = !playerTurn;
             gameBoard.checkWin();
+            gameBoard.checkTie();
         }
         else {
             return
